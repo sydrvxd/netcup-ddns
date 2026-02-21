@@ -1,0 +1,21 @@
+services:
+  netcup-dns:
+    build: .
+    container_name: netcup-dns
+    restart: unless-stopped
+    environment:
+      # Multi-domain: "domain:hosts:prefix;domain2:hosts:prefix2"
+      DOMAINS: "${DOMAINS}"
+      # Credentials per prefix (or global)
+      NETCUP_CUSTOMER_ID: "${NETCUP_CUSTOMER_ID}"
+      NETCUP_API_KEY: "${NETCUP_API_KEY}"
+      NETCUP_API_PASSWORD: "${NETCUP_API_PASSWORD}"
+      DDNS_INTERVAL: "${DDNS_INTERVAL:-300}"
+      CLEANUP_ENABLED: "${CLEANUP_ENABLED:-true}"
+      CLEANUP_INTERVAL: "${CLEANUP_INTERVAL:-86400}"
+      TZ: "${TZ:-Europe/Berlin}"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
